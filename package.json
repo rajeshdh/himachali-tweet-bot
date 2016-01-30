@@ -1,0 +1,29 @@
+{
+  "name": "himachalibot",
+  "version": "1.0.0",
+  "description": "A twitter bot that keeps a watch on hashtags and retweets them",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajeshdh/himachali-tweet-bot.git"
+  },
+  "keywords": [
+    "twitter",
+    "tweet-bot",
+    "rajesh",
+    "twit"
+  ],
+  "author": "rajesh dhiman @paharihacker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rajeshdh/himachali-tweet-bot/issues"
+  },
+  "homepage": "https://github.com/rajeshdh/himachali-tweet-bot#readme",
+  "dependencies": {
+    "mime": "^1.3.4",
+    "twit": "^2.1.4"
+  }
+}
