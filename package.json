@@ -4,6 +4,7 @@
   "description": "A twitter bot that keeps a watch on hashtags and retweets them",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js"  
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
