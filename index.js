@@ -57,9 +57,9 @@ var server = http.createServer(function(request, response) {
   response.write("</html>");
   response.end();
 });
-
-server.listen(8080);
-console.log("Server is listening at localhost:8080");
+var PORT = process.env.PORT || 5000;
+server.listen(PORT);
+console.log("Server is listening at localhost:" + PORT);
 
 // var Page_Counter = 1;
 // setInterval(function() {
