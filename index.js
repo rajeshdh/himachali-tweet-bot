@@ -4,15 +4,18 @@
  * Created by Rajesh Dhiman @paharihacker
  */
 
+var http = require("http");
+
+var Twit = require('twit');
+
+
 /* Configure the Twitter API */
 var TWITTER_CONSUMER_KEY = 'KMW8P8UmGZuyRYn6L1edJf5nY';
 var TWITTER_CONSUMER_SECRET = 'ofICw83yRRg7hwEnIDazaX5jEmK4XNPI9RGkocksgo24uYC3MF';
 var TWITTER_ACCESS_TOKEN = '2992259190-nUmT9PRXlZnSOXSyGFqlXqeQC71mHtoDJ2E809I';
 var TWITTER_ACCESS_TOKEN_SECRET = '343Me1xqXHk7V4hJsLxz4I6UXEArc54NJ8OPMFgARSOw1';
 
-/* set Twitter search phrase */
 
-var Twit = require('twit');
 
 var TwitBot = new Twit({
 	consumer_key: TWITTER_CONSUMER_KEY,
@@ -40,6 +43,24 @@ stream.on('tweet', function (tweet) {
 		}
 	});
 });
+
+var server = http.createServer(function(request, response) {
+  response.writeHead(200, {"Content-Type": "text/html"});
+  response.write("<!DOCTYPE html>");
+  response.write("<html>");
+  response.write("<head>");
+  response.write("<title>himachali Bot Page</title>");
+  response.write("</head>");
+  response.write("<body>");
+  response.write("Hello Humans!!    ");
+  response.write("</body>");
+  response.write("</html>");
+  response.end();
+});
+
+server.listen(8080);
+console.log("Server is listening at localhost:8080");
+
 // var Page_Counter = 1;
 // setInterval(function() {
 
