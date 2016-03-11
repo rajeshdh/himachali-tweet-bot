@@ -4,7 +4,7 @@
   "description": "A twitter bot that keeps a watch on hashtags and retweets them",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",  
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,6 +25,8 @@
   "homepage": "https://github.com/rajeshdh/himachali-tweet-bot#readme",
   "dependencies": {
     "mime": "^1.3.4",
-    "twit": "^2.1.4"
+    "moment": "^2.12.0",
+    "twit": "^2.1.4",
+    "underscore": "^1.8.3"
   }
 }

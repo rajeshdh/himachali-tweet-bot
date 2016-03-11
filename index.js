@@ -4,9 +4,10 @@
  * Created by Rajesh Dhiman @paharihacker
  */
 
-var http = require("http");
-
-var Twit = require('twit');
+var http = require("http"),
+  Twit = require('twit'),
+  moment = require('moment'),
+  _ = require('underscore');
 
 
 /* Configure the Twitter API */
@@ -27,7 +28,8 @@ var TwitBot = new Twit({
 console.log("The bot is running...");
 
 
-var WATCH_HASHTAGS = '#himachal, #himachalpradesh, #Himachal, #HimachalPradesh';
+var WATCH_HASHTAGS = '#himachal, #himachalpradesh, #Himachal, #HimachalPradesh, #hp, #हिमाचल';
+
 
 // 
 //  filter the twitter public stream by the hashtags. 
@@ -42,6 +44,27 @@ stream.on('tweet', function (tweet) {
 		return;
 		}
 	});
+});
+
+// heroku server gets to sleep after 30 minutes of inactivity so I have to go to the link to activate
+// the bot again. The tweets posted in between are not retweeted by the bot
+// so whenever I will open the link it will search for the tweets from the time I last retweeted and retweets them
+
+TwitBot.get('statuses/user_timeline', { screen_name: 'RT_Himachal', count: 1 }, function(err, data, response) {
+  //console.log(data);
+  var created = moment(new Date(data[0].created_at)).format('MM/DD/YYYY');
+  TwitBot.get('search/tweets', { q:'#himachal since:'+created, count: 100 }, function(err, tweets, response) {
+    
+    _.each(tweets.statuses, function(tweet){
+   
+      TwitBot.post('statuses/retweet/:id', {id: tweet.id_str }, function(error, data, response) {
+        if (error){
+          console.warn("Error:" + error);
+          return;
+          }
+        });
+      });
+  }); 
 });
 
 var server = http.createServer(function(request, response) {
