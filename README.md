@@ -1,4 +1,4 @@
-# himachali-tweet-bot
+# A Tweet-bot
 A twitter bot that keeps a watch on specified hashtags and retweets the one matching criteria. 
 
 #Installing
