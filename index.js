@@ -28,7 +28,7 @@ var TwitBot = new Twit({
 console.log("The bot is running...");
 
 
-var WATCH_HASHTAGS = '#himachal, #himachalpradesh, #Himachal, #HimachalPradesh, #hp, #हिमाचल';
+var WATCH_HASHTAGS = '#himachal, #himachalpradesh, #Himachal, #HimachalPradesh, #हिमाचल';
 
 
 // 
