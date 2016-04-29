@@ -1,0 +1,48 @@
+// var Page_Counter = 1;
+// setInterval(function() {
+
+// TwitBot.get('users/search', { q: 'followback', page: Page_Counter },  function (error, data, response) {
+//  if (error){
+// 		console.warn("Error:" + error);
+// 		return;
+// 		}
+		
+// 		//console.log(data);
+// 		data.map(followUser);
+//  		Page_Counter++;
+// })
+
+// function followUser(user) {
+//    console.log(user.screen_name);
+//    if(user.following == false && user.follow_request_sent == false)
+//    {
+// 	   console.log('following: ' +user.screen_name);
+//    		TwitBot.post('friendships/create', {id: user.id }, function(error,data) {
+// 	  		if(error)
+// 	  		{
+// 		  		console.warn(error);
+// 		  		return;
+// 	  		} 
+//    		});
+//    }
+// }
+// }, 20000);
+
+
+// TwitBot.get('followers/ids', function(err, reply) {
+//       if(err) { return callback(err); }
+      
+//       var followers = reply.ids
+//         , randFollower  = randIndex(followers);
+        
+//       self.twit.get('friends/ids', { user_id: randFollower }, function(err, reply) {
+//           if(err) { return callback(err); }
+          
+//           var friends = reply.ids
+//             , target  = randIndex(friends);
+            
+//           self.twit.post('friendships/create', { id: target }, callback); 
+//         })
+//     })
+	
+	
