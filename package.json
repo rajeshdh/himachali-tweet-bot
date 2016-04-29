@@ -54,7 +54,8 @@
     "swig": "^1.4.2",
     "twit": "^2.2.3",
     "underscore": "^1.8.3",
-    "bower": "^1.6.5"
+    "bower": "^1.6.5",
+    "gulp": "^3.9.0"
   },
   "devDependencies": {
     "babel-core": "^6.1.19",
@@ -64,7 +65,6 @@
     "babelify": "^7.2.0",
     "bower": "^1.6.5",
     "browserify": "^12.0.1",
-    "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-concat": "^2.6.0",
     "gulp-cssmin": "^0.1.7",
