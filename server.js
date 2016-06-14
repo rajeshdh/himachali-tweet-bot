@@ -38,7 +38,7 @@ mongoose.connection.on('error', function() {
   console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?');
 });
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 1337);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
