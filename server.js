@@ -130,7 +130,7 @@ server.listen(app.get('port'), function() {
  * attach a listener to new tweets with hashtags to watch 
  */
 function getNewTweets() {
-  var WATCH_HASHTAGS = '#himachal, #himachalpradesh, #Himachal, #HimachalPradesh, #हिमाचल, #shimla, #manali, #dharamshala, #dhauladhar, #himalayas, #devbhoomi, #chamba';
+  var WATCH_HASHTAGS = '#himachal, #himachalpradesh, #Himachal, #HimachalPradesh, #हिमाचल, #shimla, #manali, #dharamshala, #dhauladhar, #himalayas, #devbhoomi, #birbilling, #kasol, #parvativalley';
   /* 
    *  
    * filter the twitter public stream by the hashtags. 
