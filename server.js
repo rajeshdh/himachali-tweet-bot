@@ -30,7 +30,8 @@ var TwitBot = new Twit({
   consumer_key: config.TWITTER_CONSUMER_KEY,
   consumer_secret: config.TWITTER_CONSUMER_SECRET,
   access_token: config.TWITTER_ACCESS_TOKEN,
-  access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
+  access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET,
+  timeout_ms: 60*1000, 
 });
 
 mongoose.connect(config.database);
