@@ -31,7 +31,7 @@ var TwitBot = new Twit({
   consumer_secret: config.TWITTER_CONSUMER_SECRET,
   access_token: config.TWITTER_ACCESS_TOKEN,
   access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET,
-  timeout_ms: 60*1000, 
+  timeout_ms: 60*1000,
 });
 
 mongoose.connect(config.database);
@@ -50,14 +50,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 /**
  * GET /api/getTweets
- * gets tweets 
+ * gets tweets
  */
 app.get('/api/getTweets', function(req, res, next) {
 
   newTweets = 0;
   TwitBot.get('statuses/user_timeline', {
       screen_name: 'RT_Himachal',
-      count: 30
+      count: 50
     },
     function(err, data, response) {
       if (err) return next(err);
@@ -127,20 +127,21 @@ server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-/** 
- * attach a listener to new tweets with hashtags to watch 
+/**
+ * attach a listener to new tweets with hashtags to watch
  */
 function getNewTweets() {
   var WATCH_HASHTAGS = '#himachal, #himachalpradesh, #Himachal, #HimachalPradesh, #हिमाचल, #shimla, #manali, #dharamshala, #spiti, #dhauladhar, #himalayas, #devbhoomi, #birbilling, #kasol, #parvativalley, #malana';
-  /* 
-   *  
-   * filter the twitter public stream by the hashtags. 
+  /*
+   *
+   * filter the twitter public stream by the hashtags.
    */
   var stream = TwitBot.stream('statuses/filter', {
     track: WATCH_HASHTAGS
   })
 
   stream.on('tweet', function(tweet) {
+    if(checkProfanity(tweet.text)) {
     TwitBot.post('statuses/retweet/:id', {
       id: tweet.id_str
     }, function(error, data, response) {
@@ -155,6 +156,7 @@ function getNewTweets() {
         newTweets: newTweets
       });
     });
+  }
   });
 }
 
@@ -175,12 +177,12 @@ function saveTweetEntities(tweet) {
     if (err) {
       console.warn("Error:" + err);
       return;
-    }     
+    }
   });
 }
 
 /***
- * get tweets for all hashtags 
+ * get tweets for all hashtags
  */
 function retweetMissedTweets(created) {
 
@@ -200,15 +202,16 @@ function retweetMissedTweets(created) {
  * get tweets and retweet
  */
 function getAndRetweet(hashtag, created) {
- 
+
   TwitBot.get('search/tweets', {
     q: hashtag + 'since:' + created,
     count: 100
   }, function(err, tweets, response) {
 
     _.each(tweets.statuses, function(tweet) {
+      if(checkProfanity(tweet.text)){
       saveTweetEntities(tweet);
-      
+
       TwitBot.post('statuses/retweet/:id', {
         id: tweet.id_str
       }, function(error, data, response) {
@@ -216,8 +219,20 @@ function getAndRetweet(hashtag, created) {
           console.warn("Error:" + error);
           return;
         }
-        
+
       });
+    }
     });
   });
+}
+
+function checkProfanity(tweetText) {
+  var filters = ['escort', 'nude'];
+
+  if (filters.some(function(v) { return tweetText.indexOf(v) >= 0; })) {
+    // There's at least one
+    return true;
+  } else {
+    return false;
+  }
 }
