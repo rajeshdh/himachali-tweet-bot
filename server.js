@@ -16,7 +16,7 @@ var ReactDOM = require('react-dom/server');
 var Router = require('react-router');
 var swig = require('swig');
 var _ = require('underscore');
-var Twit = require('twit');
+
 var moment = require('moment');
 
 var config = require('./config');
@@ -25,19 +25,21 @@ var TwitterStats = require('./models/stats');
 
 var app = express();
 var newTweets = 0;
+var Last_Tweeted = [];
 
-var TwitBot = new Twit({
-  consumer_key: config.TWITTER_CONSUMER_KEY,
-  consumer_secret: config.TWITTER_CONSUMER_SECRET,
-  access_token: config.TWITTER_ACCESS_TOKEN,
-  access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET,
-  timeout_ms: 60*1000,
+var Twitter = require('twitter');
+var client = new Twitter({
+  consumer_key: '2UFwF79Q7Mn41EE5OEVBotRap',
+  consumer_secret: 'WEPKsVZohFsYu0PytivtqHfXDyEWR0tYulka4AcEHWq7E6fkuG',
+  access_token_key: '2992259190-nUmT9PRXlZnSOXSyGFqlXqeQC71mHtoDJ2E809I',
+  access_token_secret: '343Me1xqXHk7V4hJsLxz4I6UXEArc54NJ8OPMFgARSOw1'
 });
 
-mongoose.connect(config.database);
-mongoose.connection.on('error', function() {
-  console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?');
-});
+//
+// mongoose.connect(config.database);
+// mongoose.connection.on('error', function() {
+//   console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?');
+// });
 
 app.set('port', process.env.PORT || 1337);
 app.use(logger('dev'));
@@ -55,14 +57,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/api/getTweets', function(req, res, next) {
 
   newTweets = 0;
-  TwitBot.get('statuses/user_timeline', {
+  client.get('statuses/user_timeline', {
       screen_name: 'RT_Himachal',
-      count: 50
+      count: 30
     },
     function(err, data, response) {
       if (err) return next(err);
-      var created = moment(new Date(data[0].created_at)).format('MM/DD/YYYY');
-      retweetMissedTweets(created);
       res.send(data);
     });
 });
@@ -106,10 +106,11 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var onlineUsers = 0;
 
+// Sockets
 
 io.sockets.on('connection', function(socket) {
   onlineUsers++;
-  getNewTweets();
+ getNewTweets();
   io.sockets.emit('onlineUsers', {
     onlineUsers: onlineUsers
   });
@@ -136,101 +137,75 @@ function getNewTweets() {
    *
    * filter the twitter public stream by the hashtags.
    */
-  var stream = TwitBot.stream('statuses/filter', {
-    track: WATCH_HASHTAGS
-  })
+   client.stream('statuses/filter', {track: WATCH_HASHTAGS},  function(stream) {
+     stream.on('data', function(tweet) {
+       let tweetId = tweet.id_str;
+       if(Last_Tweeted.indexOf(tweetId) > -1) {
+         // already existed do not retweet
+         if(Last_Tweeted.length >= 10) {
+           Last_Tweeted = [];
+         }
+       } else if (haveProfanity(tweet.text)) {
+         // do not retweet block user:: todo
+     } else {
+          retweet(tweetId);
+     }
+     });
 
-  stream.on('tweet', function(tweet) {
-    if(checkProfanity(tweet.text)) {
-    TwitBot.post('statuses/retweet/:id', {
-      id: tweet.id_str
-    }, function(error, data, response) {
-      if (error) {
-        console.warn("Error:" + error);
-        return;
-      }
-      // increase new tweets count and emit new event
-      newTweets++;
-      saveTweetEntities(tweet);
-      io.sockets.emit('newTweet', {
-        newTweets: newTweets
-      });
+     stream.on('error', function(error) {
+       console.log(error);
+     });
+   });
+  // var stream = TwitBot.stream('statuses/filter', {
+  //   track: WATCH_HASHTAGS
+  // })
+  //
+  // stream.on('tweet', function(tweet) {
+  //   if(checkProfanity(tweet.text)) {
+  //   TwitBot.post('statuses/retweet/:id', {
+  //     id: tweet.id_str
+  //   }, function(error, data, response) {
+  //     if (error) {
+  //       console.warn("Error:" + error);
+  //       return;
+  //     }
+  //     // increase new tweets count and emit new event
+  //     newTweets++;
+  //     io.sockets.emit('newTweet', {
+  //       newTweets: newTweets
+  //     });
+  //   });
+  // }
+  // });
+}
+
+
+function retweet(tweetId){
+  client.post('statuses/retweet/' + tweetId, function(error, tweet, response) {
+  if (error) {
+    console.log(error);
+  } else {
+  //  increase new tweets count and emit new event
+    newTweets++;
+    io.sockets.emit('newTweet', {
+      newTweets: newTweets
     });
+    Last_Tweeted.push(tweet.id_str);
   }
-  });
+
+});
 }
 
-/**
- * Save tweet entities for the stats
- */
-function saveTweetEntities(tweet) {
-  var twitterStats = new TwitterStats({
-    tweetId: tweet.id_str,
-    user: tweet.retweeteduser,
-    hashtags: tweet.entities.hashtags,
-    urls: tweet.entities.urls,
-    created_at: tweet.created_at,
-    mentions: tweet.entities.mentions
-  });
 
-  twitterStats.save(function(err) {
-    if (err) {
-      console.warn("Error:" + err);
-      return;
-    }
-  });
-}
 
-/***
- * get tweets for all hashtags
- */
-function retweetMissedTweets(created) {
 
-  getAndRetweet('#himachal', created);
 
-  getAndRetweet('#himachalpradesh', created);
 
-  getAndRetweet('#Himachal', created);
-
-  getAndRetweet('#HimachalPradesh', created);
-
-  getAndRetweet('#हिमाचल', created);
-
-}
-
-/**
- * get tweets and retweet
- */
-function getAndRetweet(hashtag, created) {
-
-  TwitBot.get('search/tweets', {
-    q: hashtag + 'since:' + created,
-    count: 100
-  }, function(err, tweets, response) {
-
-    _.each(tweets.statuses, function(tweet) {
-      if(checkProfanity(tweet.text)){
-      saveTweetEntities(tweet);
-
-      TwitBot.post('statuses/retweet/:id', {
-        id: tweet.id_str
-      }, function(error, data, response) {
-        if (error) {
-          console.warn("Error:" + error);
-          return;
-        }
-
-      });
-    }
-    });
-  });
-}
-
-function checkProfanity(tweetText) {
+function haveProfanity(tweetText) {
   var filters = ['escort', 'nude'];
 
   if (filters.some(function(v) { return tweetText.indexOf(v) >= 0; })) {
-    // There's at least one
+    // There's at least one do not retweet
     return true;
   } else {
     return false;
