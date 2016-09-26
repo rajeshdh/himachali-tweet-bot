@@ -139,7 +139,7 @@ function getNewTweets() {
    */
    client.stream('statuses/filter', {track: WATCH_HASHTAGS},  function(stream) {
      stream.on('data', function(tweet) {
-       let tweetId = tweet.id_str;
+       var tweetId = tweet.id_str;
        if(Last_Tweeted.indexOf(tweetId) > -1) {
          // already existed do not retweet
          if(Last_Tweeted.length >= 10) {
