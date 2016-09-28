@@ -29,10 +29,10 @@ var Last_Tweeted = [];
 
 var Twitter = require('twitter');
 var client = new Twitter({
-  consumer_key: '2UFwF79Q7Mn41EE5OEVBotRap',
-  consumer_secret: 'WEPKsVZohFsYu0PytivtqHfXDyEWR0tYulka4AcEHWq7E6fkuG',
-  access_token_key: '2992259190-nUmT9PRXlZnSOXSyGFqlXqeQC71mHtoDJ2E809I',
-  access_token_secret: '343Me1xqXHk7V4hJsLxz4I6UXEArc54NJ8OPMFgARSOw1'
+  consumer_key: config.TWITTER_CONSUMER_KEY,
+  consumer_secret: config.TWITTER_CONSUMER_SECRET,
+  access_token_key: config.TWITTER_ACCESS_TOKEN,
+  access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
 });
 
 //
@@ -202,7 +202,7 @@ function retweet(tweetId){
 
 
 function haveProfanity(tweetText) {
-  var filters = ['escort', 'nude'];
+  var filters = ['escort', 'nude', 'asshole', 'looser', 'wildgirl', 'Pulse Rate', 'chutia', 'chutiye'];
 
   if (filters.some(function(v) { return tweetText.indexOf(v) >= 0; })) {
     // There's at least one do not retweet
