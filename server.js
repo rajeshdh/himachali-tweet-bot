@@ -202,7 +202,7 @@ function retweet(tweetId){
 
 
 function haveProfanity(tweetText) {
-  var filters = ['escort', 'nude', 'asshole', 'looser', 'wildgirl', 'Pulse Rate', 'chutia', 'chutiye'];
+  var filters = ['escort', 'nude', 'asshole', 'looser', 'wildgirl', 'wildgirls', 'wildgirls.', 'wildgirls1', 'Pulse Rate', 'chutia', 'chutiye', 'gasti', 'fuck', 'lesbian', 'gay', 'sex', 'porn', 'pornography'];
 
   if (filters.some(function(v) { return tweetText.indexOf(v) >= 0; })) {
     // There's at least one do not retweet
