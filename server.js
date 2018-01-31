@@ -90,7 +90,7 @@ app.use(function(req, res) {
 });
 
 app.use(function(err, req, res, next) {
-  console.log(err.stack.red);
+  // console.log(err.stack.red);
   res.status(err.status || 500);
   res.send({
     message: err.message
@@ -141,7 +141,7 @@ function getNewTweets() {
      stream.on('data', function(tweet) {
        var tweetId = tweet.id_str;
        if(Last_Tweeted.indexOf(tweetId) > -1) {
-         // already existed do not retweet
+         // already exist do not retweet
          if(Last_Tweeted.length >= 10) {
            Last_Tweeted = [];
          }
