@@ -3,7 +3,7 @@ An implementation of basic **twitter bot** functionality and **react application
 
 A twitter bot that keeps a watch on specified hashtags and retweets them. 
 Also displays latest tweets and new tweet notifications from the twitter bot account on home screen.
-Checkout the [live demo](https://rthimachal.herokuapp.com/)
+
 Powered by **Node.js, MongoDB, socket.io and React  with Flux architecture and server-side rendering**.
 
 

@@ -35,11 +35,6 @@ var client = new Twitter({
   access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-//
-// mongoose.connect(config.database);
-// mongoose.connection.on('error', function() {
-//   console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?');
-// });
 
 app.set('port', process.env.PORT || 1337);
 app.use(logger('dev'));
@@ -156,27 +151,6 @@ function getNewTweets() {
        console.log(error);
      });
    });
-  // var stream = TwitBot.stream('statuses/filter', {
-  //   track: WATCH_HASHTAGS
-  // })
-  //
-  // stream.on('tweet', function(tweet) {
-  //   if(checkProfanity(tweet.text)) {
-  //   TwitBot.post('statuses/retweet/:id', {
-  //     id: tweet.id_str
-  //   }, function(error, data, response) {
-  //     if (error) {
-  //       console.warn("Error:" + error);
-  //       return;
-  //     }
-  //     // increase new tweets count and emit new event
-  //     newTweets++;
-  //     io.sockets.emit('newTweet', {
-  //       newTweets: newTweets
-  //     });
-  //   });
-  // }
-  // });
 }
 
 
