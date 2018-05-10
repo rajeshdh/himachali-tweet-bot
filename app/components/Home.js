@@ -39,7 +39,7 @@ class HomeList extends React.Component {
         <div key={index} className='list-group-item animated fadeIn'>
           <div className='media'>
             <span className='position pull-left'>{index + 1}</span>
-          
+    
             <div className='media-body'>
              <Tweet data={tweet} />                    
             
