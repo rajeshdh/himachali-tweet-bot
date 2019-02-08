@@ -59,7 +59,7 @@
     "gulp-uglify": "^1.4.2",
     "gulp-util": "^3.0.7",
     "history": "^1.13.0",
-    "moment": "^2.13.0",
+    "moment": "^2.24.0",
     "mongoose": "^4.2.5",
     "morgan": "^1.6.1",
     "react": "^15.3.2",
