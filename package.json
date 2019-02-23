@@ -66,7 +66,7 @@
     "react-dom": "^15.3.2",
     "react-linkify": "^0.1.1",
     "react-router": "^1.0.0",
-    "react-tweet": "^1.0.22",
+    "react-tweet": "^1.7.1",
     "request": "^2.65.0",
     "sentiment": "^5.0.0",
     "serve-favicon": "^2.3.0",
