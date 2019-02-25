@@ -74,7 +74,7 @@
     "swig": "^1.4.2",
     "twit": "^2.2.5",
     "twitter": "^1.4.0",
-    "underscore": "^1.8.3",
+    "underscore": "^1.9.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.0"
