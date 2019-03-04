@@ -60,7 +60,7 @@
     "gulp-util": "^3.0.7",
     "history": "^1.13.0",
     "moment": "^2.24.0",
-    "mongoose": "^4.2.5",
+    "mongoose": "^5.4.17",
     "morgan": "^1.9.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
