@@ -70,7 +70,7 @@
     "request": "^2.65.0",
     "sentiment": "^5.0.0",
     "serve-favicon": "^2.3.0",
-    "socket.io": "^1.3.7",
+    "socket.io": "^2.3.0",
     "swig": "^1.4.2",
     "twit": "^2.2.5",
     "twitter": "^1.4.0",
