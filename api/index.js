@@ -1,35 +1,19 @@
 var Twitter = require("twitter");
-var config = require("../config");
+
+require('dotenv').config()
 
 var client = new Twitter({
-  consumer_key: config.TWITTER_CONSUMER_KEY,
-  consumer_secret: config.TWITTER_CONSUMER_SECRET,
-  access_token_key: config.TWITTER_ACCESS_TOKEN,
-  access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
-var newTweets = 0;
-module.exports.getTimelineTweets = function() {
-  return new Promise(function(resolve, reject) {
-    client.get(
-      "statuses/user_timeline",
-      {
-        screen_name: "RT_Himachal",
-        count: 30
-      },
-      function(err, data, response) {
-        if (err) return reject(err);
-        resolve(data);
-        return data;
-      }
-    );
-  });
-};
 /**
  * attach a listener to new tweets with hashtags to watch
  */
-module.exports.getNewTweets = function(io) {
+module.exports.startBot = function(io) {
   var WATCH_HASHTAGS =
-    "#himachal, #himachalpradesh, #Himachal, #HimachalPradesh, #हिमाचल, #shimla, #manali, #dharamshala, #spiti, #dhauladhar, #devbhoomi, #birbilling, #kasol, #parvativalley, #malana";
+    "#himachal, #himachalpradesh, #Himachal, #HimachalPradesh, #हिमाचल, #shimla, #manali, #dharamshala, #spiti, #dhauladhar, #devbhoomi, #birbilling";
   /*
      *
      * filter the twitter public stream by the hashtags.
@@ -57,13 +41,7 @@ function retweet(io, tweetId) {
   client.post("statuses/retweet/" + tweetId, function(error, tweet, response) {
     if (error) {
     //   console.log(error);
-    } else {
-      //  increase new tweets count and emit new event
-      newTweets++;
-      io.sockets.emit("newTweet", {
-        newTweets: newTweets
-      });
-    }
+    } 
   });
 }
 /**
@@ -91,7 +69,9 @@ function haveProfanity(tweetText) {
     "gay",
     "sex",
     "porn",
-    "pornography"
+    "pornography",
+    "nude",
+    "nudist"
   ];
 
   if (

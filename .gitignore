@@ -41,3 +41,4 @@ public/js/*
  example.txt
 # config
 config.js
+.env
